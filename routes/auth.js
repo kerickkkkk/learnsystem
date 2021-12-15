@@ -21,6 +21,7 @@ router.get('/testAPI', (req, res)=>{
 // joi/register
 router.post('/register', async (req, res)=>{
   console.log('register');
+  // validation
   const {error} = registerValidation(req.body)
   if(error) res.status(400).send(error.details[0].message)
 
@@ -50,4 +51,34 @@ router.post('/register', async (req, res)=>{
   }
 
 })
+
+// login
+router.post('/login', (req, res) => {
+  // validation 資料
+  const { error } = loginValidation(req.body)
+  if(error) res.status(400).send(error.details[0].message)
+
+  User.findOne({email: req.body.email}, function(err, user){
+    if(err){
+      res.status(400).send(err)
+    }
+    if(!user){
+      res.status(401).send('使用者不存在')
+    }else{
+      user.comparePassword(req.body.password, function(err, isMatch){
+        if(err) return res.status(400).send(err)
+        if(isMatch){
+          const tokenObject = {_id: user.id, email: user.email}
+          const token = jwt.sign(tokenObject, process.env.PASSPORT_SECRET)
+          res.send({success: true, token:`JWT ${token}`, user})
+        }else{
+          res.status(401).send('密碼錯誤')
+        }
+      })
+    }
+  })
+
+})
+
+
 module.exports = router
