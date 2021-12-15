@@ -27,9 +27,9 @@ const userSchema = new mongoose.Schema({
     enum:['student' ,'instructor'],
     required: true
   },
-  data:{
+  date:{
     type: Date,
-    default: Data.now,
+    default: Date.now,
   }
 })
 
