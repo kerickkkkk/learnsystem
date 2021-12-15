@@ -4,6 +4,8 @@ const mongoose = require('mongoose')
 const dotenv = require('dotenv')
 dotenv.config()
 const authRoute = require('./routes').auth
+const passport = require('passport')
+require('./config/passport')(passport)
 
 // 連接到 DB 
 mongoose
