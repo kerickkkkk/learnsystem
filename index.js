@@ -3,9 +3,7 @@ const app = express()
 const mongoose = require('mongoose')
 const dotenv = require('dotenv')
 dotenv.config()
-
-
-console.log(123)
+const authRoute = require('./routes').auth
 
 // 連接到 DB 
 mongoose
@@ -23,6 +21,8 @@ mongoose
 // middleware
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
+// 一定要加 /api 和前端接會很方便
+app.use('/api/user', authRoute)
 
 const port = 8080
 
