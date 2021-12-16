@@ -3,7 +3,9 @@ const app = express()
 const mongoose = require('mongoose')
 const dotenv = require('dotenv')
 dotenv.config()
+// router
 const authRoute = require('./routes').auth
+const courseRoute = require('./routes').course
 const passport = require('passport')
 require('./config/passport')(passport)
 
@@ -25,6 +27,10 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 // 一定要加 /api 和前端接會很方便
 app.use('/api/user', authRoute)
+// 需初始化
+app.use(passport.initialize())
+// 需要登入則要先驗證用 jwt 
+app.use('/api/courses', passport.authenticate('jwt', {session: false}), courseRoute)
 
 const port = 8080
 
