@@ -8,6 +8,7 @@ const authRoute = require('./routes').auth
 const courseRoute = require('./routes').course
 const passport = require('passport')
 require('./config/passport')(passport)
+const cors = require('cors')
 
 // 連接到 DB 
 mongoose
@@ -25,6 +26,9 @@ mongoose
 // middleware
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
+// 放在 route 上面
+app.use(cors())
+
 // 一定要加 /api 和前端接會很方便
 app.use('/api/user', authRoute)
 // 需初始化
