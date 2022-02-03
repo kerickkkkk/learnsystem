@@ -22,7 +22,7 @@ function App(){
         <Route path="/register" element={<RegisterComponent />} />
         <Route path="/login" element={<LoginComponent  setCurrentUser = {setCurrentUser}/>} />
         <Route path="/profile" element={<ProfileComponent currentUser ={currentUser}/>} />
-        <Route path="/course" element={<CourseComponent currentUser ={currentUser}/>} />
+        <Route path="/course" element={<CourseComponent  setCurrentUser = {setCurrentUser} currentUser ={currentUser}/>} />
       </Routes>
     </div>
   )
