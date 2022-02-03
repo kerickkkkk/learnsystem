@@ -60,8 +60,8 @@ function RegisterComponent(){
           <label htmlFor="role">role</label>
           {/* <input type="text" className="form-control" onChange={handleRole} name="role" /> */}
           <select onChange={handleRole} name="role" id="role" className="form-control">
+            <option value="" disabled>請選擇身分</option>
             <option value="student">student</option>
-            <option value="admin">admin</option>
             <option value="instructor">instructor</option>
           </select>
         </div>

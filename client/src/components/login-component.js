@@ -25,10 +25,8 @@ function RegisterComponent(props){
           localStorage.setItem('learning_user', JSON.stringify(response.data) )
           setCurrentUser(response.data)
         }
-        console.log(123)
         navigate('/profile')
       }).catch( error =>{
-        console.log(error.response)
         setMessage(error.response.data)
       })
   }
@@ -37,6 +35,7 @@ function RegisterComponent(props){
     <div style={{ padding: "3rem" }} className="col-md-12">
       <div>
         <h2>登入頁面</h2>
+          {/* 錯誤訊息 */}
           { message && (<div className="alert alert-danger">
               { message }
             </div>
