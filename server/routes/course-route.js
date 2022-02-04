@@ -45,6 +45,21 @@ router.post('/', async (req,res)=>{
   }
 })
 
+// 查詢講師的課程
+router.get('/instructor/:_instructor_id', (req,res)=>{
+  let { _instructor_id } = req.params
+  Course.find({instructor_id : _instructor_id})
+    .populate('instructor',[
+      'username',
+      'email'
+    ])
+    .then((data)=>{
+      res.send(data)
+    }).catch(()=>{
+      res.status(500).send('無法取得課程資訊')
+    })
+})
+
 // 找單一堂
 router.get('/:_id', (req, res)=>{
   let { _id } = req.params

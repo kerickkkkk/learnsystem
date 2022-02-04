@@ -70,6 +70,15 @@ function  NavComponent(props){
                 </li>
                 )
               }
+              {
+                currentUser && currentUser.user.role === 'instructor' && (
+                <li className="nav-item">
+                  <Link className="nav-link" to="/post-course">
+                    新增課程
+                  </Link>
+                </li>
+                )
+              }
 
 
             </ul>

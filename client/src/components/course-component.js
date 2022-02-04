@@ -1,13 +1,32 @@
 // rafc
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import { useNavigate  } from 'react-router-dom'
+import CourseService from '../service/course.service'
 function CourseComponent(props) {
   const navigate = useNavigate()
   const {currentUser, setCurrentUser} = props
+  let [courseData, setCourseData] = useState(null)
 
   const goToLogin = () => {
     navigate('/login')
   }
+  useEffect(()=>{
+    console.log('course useEffect');
+    let _id;
+    if(currentUser){
+      _id = currentUser.user._id
+    }else{
+      _id = ''
+    }
+    CourseService.get(_id)
+      .then(({data})=>{
+        console.log(data);
+        setCourseData(data)
+      }).catch((err)=>{
+        console.log(err);
+      })
+  },[])
+
 
   return (
     <div>
@@ -27,8 +46,26 @@ function CourseComponent(props) {
       {/* 學生 */}
       {
         currentUser && currentUser.user.role === 'student' && <div className="p-5">
-          老師您好
+          學生您好
         </div>
+      }
+      {
+        courseData && courseData.length > 0 &&(
+          <div>
+            {
+              courseData.map(course => 
+                <div className="card" style={{ width: "18rem" }} key={course._id}>
+                  <div className="card-body">
+                    <h5 className="card-title">{course.title}</h5>
+                    <p className="card-text">{course.description}</p>
+                    註冊數 : {course.students.length} 人
+                    課程價格：{course.price}
+                  </div>
+                </div>
+              )
+            }
+          </div>
+        )
       }
     </div>
 
