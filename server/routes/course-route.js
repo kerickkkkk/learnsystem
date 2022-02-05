@@ -37,10 +37,10 @@ router.get('/student/:_student_id', (req,res)=>{
 })
 
 // 註冊課程
-router.post('/enroll-course/', (req,res) =>{
+//**************** 32.11*/
+router.post('/enroll-course/', async(req,res) =>{
   const { _id, student_id} = req.body
   Course.findOne({_id}).then((course)=>{
-    console.log({course})
     course.students.push(student_id)
     course.save()
   }).catch((err)=>{
@@ -87,6 +87,20 @@ router.get('/instructor/:_instructor_id', (req,res)=>{
       res.send(data)
     }).catch(()=>{
       res.status(500).send('無法取得課程資訊')
+    })
+})
+// 用搜尋標題找課程
+router.post('/search-course/',(req, res)=>{
+  const {searchText} = req.body
+  console.log({searchText},'be')
+  const searchCondition = searchText !== '' ? {title: {'$regex': searchText, '$options': 'i'} } : {}
+
+  Course.find(searchCondition)
+    .then((courses)=>{
+      res.status(200).send(courses)
+    })
+    .catch(()=>{
+      res.status(500).send('查無此課程')
     })
 })
 

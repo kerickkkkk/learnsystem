@@ -82,6 +82,21 @@ class CourseService {
       }
     )
   }
+  searchCourse(searchText){
+    let token = localStorage.getItem('learning_user') 
+    ? JSON.parse(localStorage.getItem('learning_user')).token 
+    : ''
+
+    return axios.post(`${API_URL}/search-course/`,
+      {searchText},
+      {
+        headers:{
+          Authorization:token
+        }
+      }
+    )
+      
+  }
 }
 
 
