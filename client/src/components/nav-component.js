@@ -65,7 +65,7 @@ function  NavComponent(props){
                 currentUser && (
                 <li className="nav-item">
                   <Link className="nav-link" to="/course">
-                    課程
+                    我的課程
                   </Link>
                 </li>
                 )
@@ -75,6 +75,15 @@ function  NavComponent(props){
                 <li className="nav-item">
                   <Link className="nav-link" to="/post-course">
                     新增課程
+                  </Link>
+                </li>
+                )
+              }
+              {
+                currentUser && currentUser.user.role === 'student' && (
+                <li className="nav-item">
+                  <Link className="nav-link" to="/enroll-course">
+                    註冊課程
                   </Link>
                 </li>
                 )

@@ -6,7 +6,7 @@ router.use((req, res, next)=>{
   console.log('一個請求進入 course route');
   next()
 })
-// 取得 該身分所有課程
+// 取得 該所有課程包含講師資料
 router.get('/', async (req, res) =>{
   Course.find({})
     // 利用關聯 objId 找課程
@@ -16,6 +16,36 @@ router.get('/', async (req, res) =>{
     }).catch(()=>{
       res.status(500).send('沒有找到課程')
     })
+})
+
+// 學生取得自己有註冊的課程
+router.get('/student/:_student_id', (req,res)=>{
+  const {_student_id} = req.params
+  console.log({_student_id})
+  // 找到 students[] 可以用這個方式找到
+  Course.find({students: _student_id})
+    .populate('instructor',[
+      'username',
+      'email'
+    ])
+    .then((courses)=>{
+      res.status(200).send(courses)
+    })
+    .catch(()=>{
+      res.status(500).send('該學生沒有註冊課程')
+    })
+})
+
+// 註冊課程
+router.post('/enroll-course/', (req,res) =>{
+  const { _id, student_id} = req.body
+  Course.findOne({_id}).then((course)=>{
+    console.log({course})
+    course.students.push(student_id)
+    course.save()
+  }).catch((err)=>{
+    res.status(500).send('課程有誤')
+  })
 })
 
 // 新增課程
@@ -48,7 +78,7 @@ router.post('/', async (req,res)=>{
 // 查詢講師的課程
 router.get('/instructor/:_instructor_id', (req,res)=>{
   let { _instructor_id } = req.params
-  Course.find({instructor_id : _instructor_id})
+  Course.find({instructor : _instructor_id})
     .populate('instructor',[
       'username',
       'email'

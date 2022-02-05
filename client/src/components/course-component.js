@@ -11,20 +11,30 @@ function CourseComponent(props) {
     navigate('/login')
   }
   useEffect(()=>{
-    console.log('course useEffect');
     let _id;
     if(currentUser){
       _id = currentUser.user._id
     }else{
       _id = ''
     }
-    CourseService.get(_id)
-      .then(({data})=>{
-        console.log(data);
-        setCourseData(data)
-      }).catch((err)=>{
-        console.log(err);
-      })
+    if(currentUser.user.role === 'instructor'){
+      CourseService.getInstructorCourse(_id)
+        .then(({data})=>{
+          setCourseData(data)
+        }).catch((err)=>{
+          console.log(err);
+        })
+    }else if(currentUser.user.role === 'student'){
+      CourseService.getEnrollCourse(_id)
+        .then((data)=>{
+          console.log('student',{data})
+          setCourseData(data.data)
+        })
+        .catch((err)=>{
+          console.log(err);
+        })
+    }
+
   },[])
 
 
@@ -40,7 +50,7 @@ function CourseComponent(props) {
       {/* 教師 */}
       {
         currentUser && currentUser.user.role === 'instructor' && <div className="p-5">
-          老師您好
+          講師：{currentUser.user.username} ，您好:
         </div>
       }
       {/* 學生 */}

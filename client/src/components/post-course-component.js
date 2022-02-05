@@ -47,7 +47,7 @@ function PostCourseComponent(props){
         )
       }
       {
-        currentUser && currentUser.role !== 'instructor' &&(
+        currentUser && currentUser.user.role !== 'instructor' &&(
           <div>
             <h2>只有講師可以開新的課程</h2>
             <button className="btn btn-primary"
@@ -57,7 +57,7 @@ function PostCourseComponent(props){
         )
       }
       {
-        currentUser && currentUser.role === 'instructor' &&(
+        currentUser && currentUser.user.role === 'instructor' &&(
         <div> 
             { message && (<div className="alert alert-danger">
                 { message }
